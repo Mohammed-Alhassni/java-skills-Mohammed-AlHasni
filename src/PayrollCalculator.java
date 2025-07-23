@@ -42,4 +42,23 @@ public class PayrollCalculator {
         }
         return weeklyPay;
     }
+
+    public static double calculateTaxDeduction(double grossPay, boolean hasHealthInsurance) {
+        double taxDeduction = 0;
+        if (grossPay > 0 && grossPay < 500){
+            taxDeduction= grossPay * 0.10;
+        } else if (grossPay > 501 && grossPay < 100){
+            taxDeduction= grossPay * 0.15;
+        } else if (grossPay > 1001 && grossPay < 2000){
+            taxDeduction= grossPay * 0.20;
+        } else if (grossPay > 2000){
+            taxDeduction= grossPay * 0.25;
+        } else {
+            System.out.println("Please enter valid values");
+        }
+
+        if (hasHealthInsurance){taxDeduction= taxDeduction - 50;}
+
+        return taxDeduction;
+    }
 }
