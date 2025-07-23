@@ -1,5 +1,9 @@
 package src;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class PayrollCalculator {
     public static double calculateWeeklyPay(String employeeType, double hoursWorked, double hourlyRate) {
         double weeklyPay = 0;
@@ -56,9 +60,48 @@ public class PayrollCalculator {
         } else {
             System.out.println("Please enter valid values");
         }
-
         if (hasHealthInsurance){taxDeduction= taxDeduction - 50;}
 
         return taxDeduction;
+    }
+
+    // Method to process multiple employees and find statistics
+    public static void processPayroll(String[] employeeTypes, double[] hours, double[] rates, String[] names) {
+        Map<String, Double> employesSalaries = new HashMap<>();
+        ArrayList<Double> salaries = new ArrayList<>();
+
+        for  (int i=0; i < employeeTypes.length; i++ ) {
+            double weeklyPay = calculateWeeklyPay(employeeTypes[i], hours[i], rates[i]);
+            employesSalaries.put(names[i], weeklyPay);
+            salaries.add(weeklyPay);
+        }
+
+        String highestPayEmployee;
+        double max= salaries.get(0);
+        String lowestPayEmployee;
+        double min= salaries.get(0);
+        double averagePay;
+        double totalPay= 0;
+        double overTimeCount=0;
+
+        for (double salary: salaries) {
+            if (salary>max){ max= salary;}
+
+        }
+        for (double salary: salaries) {
+            if (salary<min){ min= salary;}
+        }
+
+        for (double salary: salaries) {
+            totalPay=+ salary;
+        }
+        averagePay= totalPay/ salaries.size();
+
+
+
+
+        // Count how many employees worked overtime (>40 hours)
+        // Display results in a formatted table
+        // Handle arrays of different lengths gracefully
     }
 }
