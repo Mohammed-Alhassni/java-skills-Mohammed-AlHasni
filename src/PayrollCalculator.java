@@ -7,101 +7,114 @@ import java.util.Map;
 public class PayrollCalculator {
     public static double calculateWeeklyPay(String employeeType, double hoursWorked, double hourlyRate) {
         double weeklyPay = 0;
-        if (hoursWorked > 0 && hourlyRate >0){
+        if (hoursWorked > 0 && hourlyRate > 0) {
             switch (employeeType) {
                 case "FULL_TIME":
-                    if (hoursWorked>40 && hourlyRate>0){
-                        weeklyPay= 40 *  hourlyRate;
-                        weeklyPay+= (hoursWorked-40) * (hourlyRate*1.5);
-                    } else if (hoursWorked<40 && hourlyRate>0){
-                        weeklyPay= hoursWorked *  hourlyRate;
+                    if (hoursWorked > 40 && hourlyRate > 0) {
+                        weeklyPay = 40 * hourlyRate;
+                        weeklyPay += (hoursWorked - 40) * (hourlyRate * 1.5);
+                    } else if (hoursWorked < 40 && hourlyRate > 0) {
+                        weeklyPay = hoursWorked * hourlyRate;
                     }
                     break;
-                case  "PART_TIME":
-                    if (hoursWorked>25 && hourlyRate>0){
-                        weeklyPay= 25 *  hourlyRate;
-                    } else if (hoursWorked<25 && hourlyRate>0){
-                        weeklyPay= hoursWorked *  hourlyRate;
+                case "PART_TIME":
+                    if (hoursWorked > 25 && hourlyRate > 0) {
+                        weeklyPay = 25 * hourlyRate;
+                    } else if (hoursWorked < 25 && hourlyRate > 0) {
+                        weeklyPay = hoursWorked * hourlyRate;
                     }
                     break;
                 case "CONTRACTOR":
-                    if (hoursWorked>0 && hourlyRate>0){
-                        weeklyPay= hoursWorked *  hourlyRate;
+                    if (hoursWorked > 0 && hourlyRate > 0) {
+                        weeklyPay = hoursWorked * hourlyRate;
                     }
                     break;
                 case "INTERN":
-                    if (hoursWorked>20 && hourlyRate>0){
-                        weeklyPay= 20 *  (hourlyRate * 0.2);
-                    } else if (hoursWorked<20 && hourlyRate>0){
-                        weeklyPay= hoursWorked *  (hourlyRate * 0.2);
+                    if (hoursWorked > 20 && hourlyRate > 0) {
+                        weeklyPay = 20 * (hourlyRate * 0.2);
+                    } else if (hoursWorked < 20 && hourlyRate > 0) {
+                        weeklyPay = hoursWorked * (hourlyRate * 0.2);
                     }
                     break;
                 default:
                     System.out.println("Please enter valid employee type");
-                    weeklyPay= -1;
+                    weeklyPay = -1;
             }
         } else {
             System.out.println("Please enter valid values");
-            weeklyPay= -1;
+            weeklyPay = -1;
         }
         return weeklyPay;
     }
 
     public static double calculateTaxDeduction(double grossPay, boolean hasHealthInsurance) {
         double taxDeduction = 0;
-        if (grossPay > 0 && grossPay < 500){
-            taxDeduction= grossPay * 0.10;
-        } else if (grossPay > 501 && grossPay < 100){
-            taxDeduction= grossPay * 0.15;
-        } else if (grossPay > 1001 && grossPay < 2000){
-            taxDeduction= grossPay * 0.20;
-        } else if (grossPay > 2000){
-            taxDeduction= grossPay * 0.25;
+        if (grossPay > 0 && grossPay < 500) {
+            taxDeduction = grossPay * 0.10;
+        } else if (grossPay > 501 && grossPay < 100) {
+            taxDeduction = grossPay * 0.15;
+        } else if (grossPay > 1001 && grossPay < 2000) {
+            taxDeduction = grossPay * 0.20;
+        } else if (grossPay > 2000) {
+            taxDeduction = grossPay * 0.25;
         } else {
             System.out.println("Please enter valid values");
         }
-        if (hasHealthInsurance){taxDeduction= taxDeduction - 50;}
+        if (hasHealthInsurance) {
+            taxDeduction = taxDeduction - 50;
+        }
 
         return taxDeduction;
     }
 
-    // Method to process multiple employees and find statistics
     public static void processPayroll(String[] employeeTypes, double[] hours, double[] rates, String[] names) {
-        Map<String, Double> employesSalaries = new HashMap<>();
         ArrayList<Double> salaries = new ArrayList<>();
 
-        for  (int i=0; i < employeeTypes.length; i++ ) {
+        for (int i = 0; i < employeeTypes.length; i++) {
             double weeklyPay = calculateWeeklyPay(employeeTypes[i], hours[i], rates[i]);
-            employesSalaries.put(names[i], weeklyPay);
             salaries.add(weeklyPay);
         }
 
-        String highestPayEmployee;
-        double max= salaries.get(0);
-        String lowestPayEmployee;
-        double min= salaries.get(0);
-        double averagePay;
-        double totalPay= 0;
-        double overTimeCount=0;
+        String highestPayEmployee = "";
+        double max = salaries.get(0);
+        String lowestPayEmployee= "";
+        double min = salaries.get(0);
 
-        for (double salary: salaries) {
-            if (salary>max){ max= salary;}
-
-        }
-        for (double salary: salaries) {
-            if (salary<min){ min= salary;}
+        for (int i = 0; i < names.length; i++) {
+            if (salaries.get(i) > max) {
+                highestPayEmployee = names[i];
+            }
         }
 
-        for (double salary: salaries) {
-            totalPay=+ salary;
+        for (int i = 0; i < names.length; i++) {
+            if (salaries.get(i) < min) {
+                lowestPayEmployee = names[i];
+            }
         }
-        averagePay= totalPay/ salaries.size();
 
+        double totalPay = 0;
+        for (double salary : salaries) {
+            totalPay = +salary;
 
+        }
+        double averagePay = totalPay / salaries.size();
 
+        double overTimeCount = 0;
+        for (double hour : hours) {
+            if (hour > 40) {
+                overTimeCount++;
+            }
+        }
 
-        // Count how many employees worked overtime (>40 hours)
-        // Display results in a formatted table
-        // Handle arrays of different lengths gracefully
+        System.out.println("-----------------------------------");
+        System.out.println("    Employee Name   |  Employee Salary  ");
+        for (int i = 0; i < names.length; i++) {
+            System.out.println("    " + names[i]+ "   |  " + salaries.get(i) + "   ");
+        }
+        System.out.println("-----------------------------------\n");
+        System.out.println("Highest paid employed is:" +highestPayEmployee);
+        System.out.println("Lowest paid employed is:" +lowestPayEmployee);
+        System.out.println("Average pay:" + averagePay);
+        System.out.println(overTimeCount + "worked overtime");
     }
 }
