@@ -99,7 +99,7 @@ public class PayrollCalculator {
         }
         double averagePay = totalPay / salaries.size();
 
-        double overTimeCount = 0;
+        int overTimeCount = 0;
         for (double hour : hours) {
             if (hour > 40) {
                 overTimeCount++;
@@ -107,14 +107,23 @@ public class PayrollCalculator {
         }
 
         System.out.println("-----------------------------------");
-        System.out.println("    Employee Name   |  Employee Salary  ");
         for (int i = 0; i < names.length; i++) {
-            System.out.println("    " + names[i]+ "   |  " + salaries.get(i) + "   ");
+            System.out.println(names[i]+ " salary is: "+ salaries.get(i));
         }
         System.out.println("-----------------------------------\n");
         System.out.println("Highest paid employed is:" +highestPayEmployee);
         System.out.println("Lowest paid employed is:" +lowestPayEmployee);
         System.out.println("Average pay:" + averagePay);
-        System.out.println(overTimeCount + "worked overtime");
+        System.out.println(overTimeCount + " worked overtime");
+    }
+
+    public static void main(String[] args) {
+        String[] types = {"FULL_TIME", "PART_TIME", "CONTRACTOR", "INTERN", "FULL_TIME"};
+        double[] hours = {45, 20, 35, 15, 50};
+        double[] rates = {25.0, 18.0, 40.0, 12.0, 30.0};
+        String[] names = {"Alice", "Bob", "Charlie", "Diana", "Eve"};
+
+        processPayroll(types, hours, rates, names);
+
     }
 }
